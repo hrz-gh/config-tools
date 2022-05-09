@@ -5,6 +5,9 @@ noremap z; ZZ
 noremap ; :
 
 vnoremap Y "+y
+noremap gp "+p
+noremap gy ggVG"+y
+noremap gd ggVGd
 
 noremap <up> :vertical res+5<CR>
 noremap <down> :vertical res-5<CR>
