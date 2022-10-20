@@ -20,25 +20,45 @@ function upload(){
     mkdir $UPLOAD_CONFIG_PATH
 
     check "mk UPLOAD_CONFIG_PATH"
-    if [ $? -eq 0 ]; then
-        for i in "${ORIGIN_CONFIG_PATH[@]}"
-        do
-            if [ -d ${i} ]; then
-                cp -r ${i} $UPLOAD_CONFIG_PATH
-                check "cp -r ${i} $UPLOAD_CONFIG_PATH"
-            elif [ -e ${i} ]; then
-                cp ${i} $UPLOAD_CONFIG_PATH
-                check "cp ${i} $UPLOAD_CONFIG_PATH"
-            fi
-        done
-    else
-        return 1
-    fi
+    for i in "${ORIGIN_CONFIG_PATH[@]}"
+    do
+        if [ -d ${i} ]; then
+            cp -r ${i} $UPLOAD_CONFIG_PATH
+            check "cp -r ${i} $UPLOAD_CONFIG_PATH"
+        elif [ -e ${i} ]; then
+            cp ${i} $UPLOAD_CONFIG_PATH
+            check "cp ${i} $UPLOAD_CONFIG_PATH"
+        fi
+    done
     return 0
 }
 
 function config(){
 
+
+    # Config rc
+    for i in "${ORIGIN_CONFIG_PATH[@]}"
+    do
+        echo "${i}"
+        if [ -e ${i} ]; then
+            echo "${i} is already config."
+        else
+            config_path="${UPLOAD_CONFIG_PATH}/${i##*/}"
+            if [ -d ${config_path} ]; then
+                mkdir -p ${i} 
+                cp -r ${config_path} ${i}
+                check "cp -r ${config_path} ${i}"
+            else
+                cp ${config_path} ${i}
+                check "cp ${config_path} ${i}"
+            fi
+        fi
+    done
+    echo "source ~/.shrc" >> ~/.zshrc
+    check "Add shrc"
+}
+
+function download() {
     # Config Pip
     if [ -e "~/.pip/pip.conf" ]; then
         echo "Pip source is alreay config."
@@ -50,6 +70,11 @@ function config(){
         check "Config pip source"
     fi
 
+    sudo ./src/download.sh
+    git config --global user.email "hrz_ms@outlook.com"
+    git config --global user.name "hrz"
+    git config --global credential.helper store
+    
     # Get oh-my-zsh
     if [ -d "~/.oh-my-zsh" ]; then
         echo "Oh-my-zsh is already config."
@@ -57,28 +82,6 @@ function config(){
         ./src/install.sh
         check "Exec oh-my-zsh sh"
     fi
-
-
-    # Config rc
-    for i in "${ORIGIN_CONFIG_PATH[@]}"
-    do
-        if [ -e ${i} || -d ${i} ]; then
-            echo "${i} is already config."
-        else
-            config_path="${UPLOAD_CONFIG_PATH}/${i:${#HOME}+1:${#i}}"
-            cp ${config_path} ${i}
-            check "cp ${config_path} ${i}"
-        fi
-    done
-    echo "source ~/.shrc" >> ~/.zshrc
-    check "Add shrc"
-}
-
-function download() {
-    sudo ./src/download.sh
-    git config --global user.email "hrz_ms@outlook.com"
-    git config --global user.name "hrz"
-    git config --global credential.helper store
 }
 
 if [ "$#" -gt "1" ] || [ "$#" -eq "0" ]; then
