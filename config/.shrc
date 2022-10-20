@@ -1,3 +1,9 @@
+# set env
+export NVIM_INIT=~/.config/nvim/init.vim
+export hostip=$(cat /etc/resolv.conf |grep -oP '(?<=nameserver\ ).*')
+export https_proxy="http://${hostip}:7890"
+export http_proxy="http://${hostip}:7890"
+
 # http://bolyai.cs.elte.hu/zsh-manual/zsh_14.html
 bindkey -v
 bindkey '^v' edit-command-line

@@ -1,4 +1,0 @@
-export NVIM_INIT=~/.config/nvim/init.vim
-alias ra='ranger'
-alias q='exit'
-neofetch

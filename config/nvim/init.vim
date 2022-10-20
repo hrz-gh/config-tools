@@ -1,5 +1,4 @@
 source $HOME/.vimrc
-noremap <leader>rc :e $NVIM_INIT<CR>
 
 " Specify a directory for plugins
 " - For Neovim: stdpath('data') . '/plugged'

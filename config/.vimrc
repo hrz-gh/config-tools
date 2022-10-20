@@ -1,9 +1,12 @@
+let mapleader = "\<space>"
+noremap <leader><leader> :noh<CR>
+noremap <leader>e :e ${NVIM_INIT}<CR>
 noremap <C-j> 5j
 noremap <C-k> 5k
-
 noremap z; ZZ
 noremap ; :
 
+vnoremap Y "+y
 vnoremap Y "+y
 noremap gp "+p
 noremap gy ggVG"+y
@@ -21,19 +24,20 @@ noremap zj :set splitbelow<CR>:split<CR>
 noremap zh :set nosplitright<CR>:vsplit<CR>:set splitright<CR>
 noremap zl :set splitright<CR>:vsplit<CR>
 
+au! BufNewFile,BufRead *.gv setf dot
+au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 
-noremap , :call CompileRunGcc()<CR>
-func! CompileRunGcc()
+noremap , :call CompileRun()<CR>
+func! CompileRun()
 	exec "w"
-	if &filetype == 'c'
+    if &filetype == 'c'
 		exec "!clang % -o %<"
-		exec "!time ./%<"
+        if v:shell_error == 0
+		    exec "term ./%<"
+        endif
 	elseif &filetype == 'cpp'
-		set splitbelow
 		exec "!clang++ -std=c++11 % -Wall -o %<"
-		:sp
-		:res -15
-		:term ./%<
+		exec "!time ./%<"
 	elseif &filetype == 'sh'
 		:!time zsh %
 	elseif &filetype == 'python'
@@ -43,6 +47,7 @@ func! CompileRunGcc()
     endif
 endfunc
 
+syntax on
 filetype on
 
 "display
@@ -53,10 +58,10 @@ set showmatch
 set showcmd
 set scrolloff=5
 set wrap
-set background=dark
 
 "set clipboard=unnamedplus
-"set autochdir
+set autochdir
+set autoindent
 
 set ignorecase
 set smartcase
@@ -68,5 +73,3 @@ set shiftwidth=4
 set updatetime=100
 set shortmess+=c
 set hidden
-
-au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif

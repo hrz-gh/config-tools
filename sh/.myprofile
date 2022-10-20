@@ -1,4 +1,0 @@
-setxkbmap -option caps:swapescape
-export PATH=$PATH:/usr/local/texlive/2019/bin/x86_64-linux:/opt/Xilinx/Vivado/2017.4/bin
-export MANPATH=$MANPATH:/usr/local/texlive/2019/texmf-dist/doc/man
-export INFOPATH=$INFOPATH:/usr/local/texlive/2019/texmf-dist/doc/info
