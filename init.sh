@@ -78,6 +78,7 @@ function download() {
     sudo ./src/download.sh
     git config --global user.email "hrz_ms@outlook.com"
     git config --global user.name "hrz"
+    git config --global credential.helper store
 }
 
 if [ "$#" -gt "1" ] || [ "$#" -eq "0" ]; then
