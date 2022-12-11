@@ -34,8 +34,6 @@ function upload(){
 }
 
 function config(){
-
-
     # Config rc
     for i in "${ORIGIN_CONFIG_PATH[@]}"
     do
@@ -46,7 +44,7 @@ function config(){
             config_path="${UPLOAD_CONFIG_PATH}/${i##*/}"
             if [ -d ${config_path} ]; then
                 mkdir -p ${i} 
-                cp -r ${config_path} ${i}
+                cp -r ${config_path}/* ${i}
                 check "cp -r ${config_path} ${i}"
             else
                 cp ${config_path} ${i}
@@ -54,8 +52,6 @@ function config(){
             fi
         fi
     done
-    echo "source ~/.shrc" >> ~/.zshrc
-    check "Add shrc"
 }
 
 function download() {
@@ -84,22 +80,41 @@ function download() {
     fi
 }
 
+
+function usage() {
+    echo -e "Usage option:\n\tinit\n\tupload\n\tsync"
+
+}
+
+KERNEL_NAME=$(uname)
+
 if [ "$#" -gt "1" ] || [ "$#" -eq "0" ]; then
-    echo "args vaild"
+    usage
     exit 1
 fi
 
 case ${1} in
-    "--upload")
+    "init")
+        download
+        config
+        echo "source ~/.shrc" >> ~/.zshrc
+        check "Add shrc"
+        ;;
+    "upload")
         upload
         ;;
-    "--download")
-        download
-        ;;
-    "--config")
-        config
+    "sync")
+        if [ ${KERNEL_NAME} = "Linux" ]; then
+            config
+        elif [ ${KERNEL_NAME} = "Darwin" ]; then
+            config
+        else
+            echo "${KERNEL_NAME} is not support"
+            exit 1
+        fi
         ;;
     *)
-        echo -e "Usage:\n\t--upload\n\t--download\n\t--config"
+        usage
         exit 1
+        ;;
 esac
