@@ -6,19 +6,21 @@
 # Get
 apt update
 apt upgrade
-apt install -y metasploit-framework
-apt install -y gcc
+
+# 编译环境
 apt install -y clang
 apt install -y gdb
 apt install -y make
 apt install -y cmake
-apt install -y cgdb
-apt install -y neovim
-apt install -y qemu
 apt install -y npm
-apt install -y neofetch
-apt install -y figlet
-apt install -y ranger
+apt install -y build-essential
+apt install -y ninja-build
+
+
+# 工具
+apt install -y neovim
 apt install -y zsh
+
+
 apt install -y python3-pip
 pip3 install numpy ipython sympy matplotlib ipykernel
