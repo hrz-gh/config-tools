@@ -15,6 +15,7 @@ apt install -y cmake
 apt install -y npm
 apt install -y build-essential
 apt install -y ninja-build
+apt install -y repo
 
 
 # 工具
