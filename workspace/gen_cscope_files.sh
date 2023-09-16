@@ -3,12 +3,18 @@ LNX=`pwd`
 cd $LNX
 echo "The number of arguments is: $#"
 echo "The arguments are:"
-rm cscope.files
+if [ -f cscope.files ];then
+    rm cscope.files
+fi
+
+exclude_path=""
 for arg in "$@"; do
-    find $LNX  -name "*.h"  ! -path "$LNX/$arg/*" \
-        -o -name "*.c" ! -path "$LNX/$arg/*" \
-        -o -name "*.cpp"  ! -path "$LNX//tools/*" >> cscope.files
-  echo "$arg"
+  exclude_path="$exclude_path ! -path \"$LNX/$arg/*\""
 done
-exit
+
+
+find $LNX $exclude_path -name "*.c" \
+    -o $exclude_path -name "*.h" \
+    -o $exclude_path -name "*.cpp"> cscope.files
+
 
