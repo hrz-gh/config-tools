@@ -52,6 +52,14 @@ function config(){
             fi
         fi
     done
+
+    # Get oh-my-zsh
+    if [ -d "~/.oh-my-zsh" ]; then
+        echo "Oh-my-zsh is already config."
+    else
+        ./src/install.sh
+        check "Exec oh-my-zsh sh"
+    fi
 }
 
 function download() {
@@ -69,15 +77,7 @@ function download() {
     sudo ./src/download.sh
     git config --global user.email "hrz_ms@outlook.com"
     git config --global user.name "hrz"
-    git config --global credential.helper store
-    
-    # Get oh-my-zsh
-    if [ -d "~/.oh-my-zsh" ]; then
-        echo "Oh-my-zsh is already config."
-    else
-        ./src/install.sh
-        check "Exec oh-my-zsh sh"
-    fi
+    git config --global credential.helper store    
 }
 
 
