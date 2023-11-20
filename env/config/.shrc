@@ -1,5 +1,6 @@
 # set env
 export VIM_RC=~/.vimrc
+export PATH=~/.local/bin:$PATH
 
 # http://bolyai.cs.elte.hu/zsh-manual/zsh_14.html
 bindkey -v
